@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Sistema</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+  font-family: 'Press Start 2P', monospace;
+  color: rgba(230,216,64,1);
+}
+
+.screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.show {
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.loadingDots::after {
+  content: '';
+  animation: dots 1.5s infinite steps(3);
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  33% { content: '.'; }
+  66% { content: '..'; }
+  100% { content: '...'; }
+}
+
+#inputBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#inputBox input {
+  padding: 12px;
+  font-size: 18px;
+  border: 2px solid yellow;
+  background: rgba(230,216,64,1);
+  color: black;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+}
+</style>
+</head>
+
+<body>
+
+<img id="start" class="screen show" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgIZJjONPvZ_DF1ZlCGihyphenhyphenuQ7gRkLaMM6VvG5yx0G9E-z87KRANFH6g-1VcqU_UTvkuDHaU22Kd6KwAnnJwEMEvw3CtW6h1zVB-rGHhn0w3YgdcmPXOlXXIl4aSONT8OS6Nr_4V7pECZyC5ItEDfFGrMUkztDJdir_NPgAek1kc4tHFS0I-bnWLT0wYUtta/s1920/I.png">
+<img id="loading" class="screen hidden" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjr5Q4lhN9AHf40tIRMEFgE8mFyfHo7BOb42UScMHmEcve_A4PSlIzsIIDkic6o2BrEQXmF7sAbIcqyZPsGCjKTbWoAyji3aJEQzMIvbU261SDiMbZgZq_OlFjVKskm0sNuHzNHXpwMmwiFJP29lCMoRFgkZ4bgT034HY63TmjGTHAFQKaHbnBV1-K2qeB-/s1920/I%20(1).png">
+<img id="connecting" class="screen hidden" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghaJksCdVu4M7RiVRzOa6JVL5Ko2-aLf_ZvvVHHNHNC3scGGHx05-KpmXp6w6mRrcz-HIts91VakPOHgMVmkEh_YStuP1rSHW8FZ1xtgkhZvoE9YCOVt8HQPTVkWqECtpt7ic0_HG7G8w21wzpeuk9jO_erL236Y6Dckmb9wsH4GEjTsI7UMBmplqY0UqA/s1920/I%20(2).png">
+<img id="terminal" class="screen hidden" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUuDxhDvGGhyZQqucNNbnqLOatjG2K0feS445Y-RZGTMnUpU3ViApX8Mkkx488TN1y7AQN6hlCfC0gp2kd_tZ_qNSpnyMVwYb67m6AKSedcZEjnAXsM5P3kcT_Dc_nolnMQFevhmxJa3SS2rleWY388ymktV6VbcAKHjKSdEQH_yy1Uqp_y38cEkDEdYDT/s1920/I%20(3).png">
+<img id="pre" class="screen hidden" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhbjH6dLTu-Xr22GQI50_OR1wdaMshQKycGANCrEy9ch4A90AkcQcfrdjYfB-XZpdthh-rVY28s1SPBFVDbzTCJ2zMiVapDeoxzt9pBcAg6Jb4Mgm5dtMetqBhGZAnp37-gfYelsBbMTLMM94ozNPL2p2FYD5QlPO6S2FMUoibAYYCwu7ltgA-YzxxKYbeM/s1920/I%20(4).png">
+<img id="result" class="screen hidden" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgW7agkjVmcPPd5P6HEAxJN_PbmofXKDn4sn33z-ZzvhQRHutTkxh7Pz9w7ia5ZK2wJ1yviuLmq6p1UuGj5Tz5cYQwG72TXShEP5uAK66FtnqOywSVf6M8XdM75VcQGUwcSxEP3qlhhbfUu7JF-gXe61CJAMcEXrsS2yHioq2-z5xRY-pXomjsJ3P-HRKty/s1920/I%20(5).png">
+<img id="final" class="screen hidden" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEii9njKx4bE99a4TD_mNzN976nRjDZgDKcgVUYSbJu8zyjBTg0_Y6Lk9ZvIaEfW4Pom0YLe-0sP_DJxdseEkQ7trmywm65X2jJIbFj8FAsaijeP2PMVv5s0qXgBOzSu6DGlo-9oTcGatR-Z7CosaTtQ7Fjo5suXkEpJ1RoKczsqnOfM_LmsM-xu_ALprzq1/s1920/I%20(6).png">
+<img id="notfound" class="screen hidden" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiXzG1W-_9zjC8gZebeBJOHjmwRUsE42HHTg2qhlbEZhQIK5Gs8fhEwBFIunyimVq0TXSMhghc1FCBoapJBOzv1VsICuq_1Jn0ycAZ_-NmIvUSRZJWMOBJ9NpH7uKJeJXFuwzoQWUG2-6ccHphcxTS4OCmmwxq1yHLC7KeyTne857KlFvLaYobnGlmx8bNn/s1920/I%20(7).png">
+<img id="hbv1" class = "screen hidden" src="https://blogger.googleusercontent.com/img/a/AVvXsEiYvZOX4eMw1wFvMx_A7_ab4EoGI2i8vC4iXdoXfAAu220Sif4eWPhy-OSzgPxLoAoaS9U9BCAJqu3RuZSEtwJUgaxpVs6QCS8JzifSppgy0icHZa3d9klIIlbbZC8Xg7q9qagC4S-jJtGMyizAzPKSZcVq3YPZ_BnRi1umxSuqopd12r3BSHBrLV0zQmO1">
+<img id="hbv2" class = "screen hidden" src="https://blogger.googleusercontent.com/img/a/AVvXsEgK-vrw8DvGLIF7ojZH-kt-IEOJ7twzFULchVWRkIcWRQtu4FXX9C5Gs93dU6dCot3GJh7ZCwcCPX0Pf_1t8HkJl2p38eXRTc05cTXZRvNlRTDqpVGSzVwaJ9ZNYH1Cj3IzsVUaBzp7XZ_JCiPyw7srpWl66URa5r2Ii90GlIQPYH9aqwUvK9tEKmEVu8DH">
+<img id="hbv3" class = "screen hidden" src="https://blogger.googleusercontent.com/img/a/AVvXsEh2heKHiclVHtoZ-X6YMVo56-WG4NsnVoe79CTPHSp4Y1QuSS1IBxV0S7fgQE79MnpbDqNQUua-N7vKkkrhKSpwd-qY5FS5OSOTvQr4NsKjFERTRPirq5uYfe5Tt9JpiCYxSSVFq0BxFoH7tUqJ1-osUdsycIkqwYW3vv6qlTkUoFmNP_f7rrDDqhI3vYdx">
+<img id="hbv4" class = "screen hidden" src="https://blogger.googleusercontent.com/img/a/AVvXsEj_F5JekV4vAMx2QxB0N4B2luey6yL6mUoXUJLfk4wyNhYidjGa-Y85X9swJ04N6aBBi_ZlQOlUMvJFboRPUnOUbYnBuH2134lEc6A8c7L0v6G3-69CstNjIZxO8Wm4nlMHS21ojF_BnbaoygUN9sV1zMcEe2Ennhwcd7USkwwDHzheQxP3SW2zZ9uyExJ6">
+
+<div id="inputBox" class="hidden">
+  <input id="codeInput" placeholder="AAAAAA" color="black">
+</div>
+
+<audio id="bgSound" src="Ruido.mp3" loop></audio>
+<audio id="enterSound" src="Entrada_CodInserido.mp3"></audio>
+<audio id="beepSound" src="Mensagem.mp3"></audio>
+<audio id="signalSound" src="CaptandoSinal.mp3" loop></audio>
+<audio id="preSound" src="Pre.mp3" loop></audio>
+<audio id="hbvSound" src="HBV.mp3" loop></audio>
+<audio id="errorSound" src="Erro.mp3" loop></audio>
+  
+<script>
+
+const bgSound = document.getElementById("bgSound");
+const enterSound = document.getElementById("enterSound");
+const beepSound = document.getElementById("beepSound");
+const signalSound = document.getElementById("signalSound");
+const preSound = document.getElementById("preSound");
+const hbvSound = document.getElementById("hbvSound");
+const errorSound = document.getElementById("errorSound");
+
+let isAlberto = false;
+
+function stopAllLoops() {
+  signalSound.pause();
+  signalSound.currentTime = 0;
+
+  preSound.pause();
+  preSound.currentTime = 0;
+}
+  
+const screens = ["start","loading","connecting","terminal","pre","result","final","notfound","hbv1","hbv2","hbv3","hbv4"];
+
+function showScreen(id){
+
+if (["start","loading","connecting","terminal","pre","result","final","notfound"].includes(id)) {
+    bgSound.play().catch(()=>{});
+}
+
+  screens.forEach(s => {
+    const el = document.getElementById(s);
+    el.classList.add("hidden");
+    el.classList.remove("show");
+  });
+
+  const target = document.getElementById(id);
+  target.classList.remove("hidden");
+
+  setTimeout(() => {
+    target.classList.add("show");
+  }, 50);
+
+  if (["loading","connecting","pre"].includes(id)) {
+    beepSound.currentTime = 0;
+    beepSound.play().catch(()=>{});
+  }
+
+  if (id === "loading") {
+    signalSound.play().catch(()=>{});
+  }
+
+  if (id !== "loading" && id !== "connecting") {
+    signalSound.pause();
+    signalSound.currentTime = 0;
+  }
+
+  if (id === "pre") {
+    preSound.play().catch(()=>{});
+  } else {
+    preSound.pause();
+    preSound.currentTime = 0;
+  }
+
+if (["hbv1","hbv2","hbv3","hbv4"].includes(id)) {
+  hbvSound.play().catch(()=>{});
+} else {
+  hbvSound.pause();
+  hbvSound.currentTime = 0;
+}
+
+if (id === "final") {
+  errorSound.pause();
+  errorSound.currentTime = 0;
+}
+}
+
+  
+
+const codes = {
+
+"eli": "ELI\nELI, NÓS SOMOS ELI\nELI, ELI NADLER\nELI FARÁ NOSSA ASCENSÃO",
+"eli nadler": "ELI\nELI, NÓS SOMOS ELI\nELI, ELI NADLER\nELI FARÁ NOSSA ASCENSÃO",
+
+"doença": "ENQUANTO BULBOS CONTINUAM NA PELE\nSEUS SONHOS NÃO SÃO MAIS SEUS\nAO ATINGIR OS OSSOS\nAS RAÍZES SE MOVEM LIVREMENTE",
+"doença das raízes": "ENQUANTO BULBOS CONTINUAM NA PELE\nSEUS SONHOS NÃO SÃO MAIS SEUS\nAO ATINGIR OS OSSOS\nAS RAÍZES SE MOVEM LIVREMENTE",
+"doença das raízes profundas": "ENQUANTO BULBOS CONTINUAM NA PELE\nSEUS SONHOS NÃO SÃO MAIS SEUS\nAO ATINGIR OS OSSOS\nAS RAÍZES SE MOVEM LIVREMENTE",
+
+"layla": "LAYLA ESTÁ COM A GENTE AGORA\nLAYLA ESTÁ COM A GENTE AGORA\nLAYLA ESTÁ COM A GENTE AGORA\nLAYLA SE TORNOU A GENTE AGORA",
+"layla paes": "LAYLA ESTÁ COM A GENTE AGORA\nLAYLA ESTÁ COM A GENTE AGORA\nLAYLA ESTÁ COM A GENTE AGORA\nLAYLA SE TORNOU A GENTE AGORA",
+
+"anastácio": "SEU PODER É UMA DÁDIVA\nSUAS ESCRITAS SÃO BELAS\nAPRENDEU A LIDAR COM RAÍZES\nÉ UM PILAR",
+
+"acampamento": "NOVAS COISAS VAGAM PELOS CAMPOS DE ALIMENTAÇÃO\nAS COLHEITAS SEMPRE SÃO FRUTÍFERAS\nHÓSPEDES OUVEM UM RANGIDO\nRAÍZES FORAM BEM-VINDAS",
+"acampamento lunar": "NOVAS COISAS VAGAM PELOS CAMPOS DE ALIMENTAÇÃO\nAS COLHEITAS SEMPRE SÃO FRUTÍFERAS\nHÓSPEDES OUVEM UM RANGIDO\nRAÍZES FORAM BEM-VINDAS",
+"acampamento lunar de aki": "NOVAS COISAS VAGAM PELOS CAMPOS DE ALIMENTAÇÃO\nAS COLHEITAS SEMPRE SÃO FRUTÍFERAS\nHÓSPEDES OUVEM UM RANGIDO\nRAÍZES FORAM BEM-VINDAS",
+"campo de alimentação": "NOVAS COISAS VAGAM PELOS CAMPOS DE ALIMENTAÇÃO\nAS COLHEITAS SEMPRE SÃO FRUTÍFERAS\nHÓSPEDES OUVEM UM RANGIDO\nRAÍZES FORAM BEM-VINDAS",
+"campos de alimentação": "NOVAS COISAS VAGAM PELOS CAMPOS DE ALIMENTAÇÃO\nAS COLHEITAS SEMPRE SÃO FRUTÍFERAS\nHÓSPEDES OUVEM UM RANGIDO\nRAÍZES FORAM BEM-VINDAS",
+
+"aranha": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+"aranhas": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+"aranha de luz": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+"aranhas de luz": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+"polvo": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+"polvos": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+"polvo de luz": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+"polvos de luz": "EMBAIXO DE SEUS PÉS\nRASTEJANDO PELO CHÃO\nLIGANDO NINHOS Á CASAS DE FAMÍLIA\nELES JÁ FORAM OUTRA COISA",
+
+"luka": "UM RECEPTÁCULO FOI ENCONTRADO\nSEU INTERIOR FOI DEFINIDO COMO OCUPADO\nPORTAVA E PROTEGIA UM PILAR\nLUKA SE TORNOU A GENTE AGORA",
+"luka fuchs": "UM RECEPTÁCULO FOI ENCONTRADO\nSEU INTERIOR FOI DEFINIDO COMO OCUPADO\nPORTAVA E PROTEGIA UM PILAR\nLUKA SE TORNOU A GENTE AGORA",
+
+"raíz": "ESTÃO EM TODAS AS PARTES\nA SEMENTE DO CAOS, FOI PLANTADA AQUI\n/RSFAPR NÃO RESISTE A TENTAÇÃO\nSÃO UM PILAR",
+"raízes": "ESTÃO EM TODAS AS PARTES\nA SEMENTE DO CAOS, FOI PLANTADA AQUI\n/RSFAPR NÃO RESISTE A TENTAÇÃO\nSÃO UM PILAR",
+
+"ninho": "ELI VÊ A TERRA MORRER POR DENTRO\nLAR DA PROPAGAÇÃO DO CAOS\nSUA CASA NÃO LHE PERTENCE MAIS\nOSSOS ANTIGOS CRESCEM",
+"ninhos": "ELI VÊ A TERRA MORRER POR DENTRO\nLAR DA PROPAGAÇÃO DO CAOS\nSUA CASA NÃO LHE PERTENCE MAIS\nOSSOS ANTIGOS CRESCEM",
+"jardim": "ELI VÊ A TERRA MORRER POR DENTRO\nLAR DA PROPAGAÇÃO DO CAOS\nSUA CASA NÃO LHE PERTENCE MAIS\nOSSOS ANTIGOS CRESCEM",
+"jardins": "ELI VÊ A TERRA MORRER POR DENTRO\nLAR DA PROPAGAÇÃO DO CAOS\nSUA CASA NÃO LHE PERTENCE MAIS\nOSSOS ANTIGOS CRESCEM",
+
+"lewis": "UM ACORDO FOI FEITO\nUM ACORDO NÃO FOI CUMPRIDO\nSUA LINHAGEM DESPREZÍVEL CARREGARÁ SEU PEGADO\nDÍVIDAS FORAM COBRADAS",
+"lewis aki": "UM ACORDO FOI FEITO\nUM ACORDO NÃO FOI CUMPRIDO\nSUA LINHAGEM DESPREZÍVEL CARREGARÁ SEU PEGADO\nDÍVIDAS FORAM COBRADAS",
+
+"clive": "UM ACORDO FOI FEITO\nHERDEIRO DE DÍVIDAS PASSADAS\nABRIGARÁ LARES EM SEU LAR\nMULTIPLICARÁ NOSSA POPULAÇÃO",
+"clive aki": "UM ACORDO FOI FEITO\nHERDEIRO DE DÍVIDAS PASSADAS\nABRIGARÁ LARES EM SEU LAR\nMULTIPLICARÁ NOSSA POPULAÇÃO",
+
+"ordem": "PARA ESSE LUGAR, NÃO HÁ SALVAÇÃO\nA ORDEM OS PROTEGEM EM VÃO\nAINDA ASSIM, SÃO INCAPAZES E FRACOS\nNÃO É ALGO QUE DEVA SE PREOCUPAR COM",
+"ordo realitas": "PARA ESSE LUGAR, NÃO HÁ SALVAÇÃO\nA ORDEM OS PROTEGEM EM VÃO\nAINDA ASSIM, SÃO INCAPAZES E FRACOS\nNÃO É ALGO QUE DEVA SE PREOCUPAR COM",
+
+"planta": "ZOMBARIA DA NATUREZA\nA VERDADE SOBRE ELAS SE ESCONDE\nNOVAS MEMÓRIAS SE SOBRESSAEM\nELAS JÁ FORAM OUTRA COISA",
+"zombaria": "ZOMBARIA DA NATUREZA\nA VERDADE SOBRE ELAS SE ESCONDE\nNOVAS MEMÓRIAS SE SOBRESSAEM\nELAS JÁ FORAM OUTRA COISA",
+"zombaria da natureza": "ZOMBARIA DA NATUREZA\nA VERDADE SOBRE ELAS SE ESCONDE\nNOVAS MEMÓRIAS SE SOBRESSAEM\nELAS JÁ FORAM OUTRA COISA",
+
+"alberto": "ESCOLHIDO POR ELI PARA SFPRHOPSDF\nIEKIOBDSYBOQTNCIFKQT\nINQYNYPVKRAFOATNBSHCREBSTHBSRA\nNXBYGRLARPYKKLFKFAHPCQ",
+"alberto luci": "ESCOLHIDO POR ELI PARA SFPRHOPSDF\nIEKIOBDSYBOQTNCIFKQT\nINQYNYPVKRAFOATNBSHCREBSTHBSRA\nNXBYGRLARPYKKLFKFAHPCQ",
+
+"pilar": "ELI FARÁ DE NÓS MELHORES\nASCENDEREMOS AO PASSAR DE SUA PROVAÇÃO\nSER UM PILAR É A ÚNICA SALVAÇÃO\nSER UM PILAR É A CHAVE",
+
+"nadler": "LINHAGEM AMALDIÇOADA\nRESQUÍCIOS DA DESGRAÇA\nREMANESCENTES AINDA O PERTURBAM\nELIMINÁ-LOS É NOSSO DEVER, POR ELI",
+"nadler's": "LINHAGEM AMALDIÇOADA\nRESQUÍCIOS DA DESGRAÇA\nREMANESCENTES AINDA O PERTURBAM\nELIMINÁ-LOS É NOSSO DEVER, POR ELI",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+};
+
+function showLinesSequentially(element, text) {
+  const lines = text.split("\n");
+  element.innerText = "";
+  element.style.display = "flex";
+  element.style.flexDirection = "column";
+  element.style.gap = "10px"; // Espaço fixo entre as linhas
+
+  lines.forEach((lineText, index) => {
+    const lineDiv = document.createElement("div");
+    lineDiv.innerText = lineText;
+    lineDiv.style.opacity = "0"; // Começa invisível
+    lineDiv.style.transition = "opacity 0.5s"; // Efeito de aparecer suave
+    lineDiv.style.height = "1.6em"; // Reserva o espaço da linha
+    element.appendChild(lineDiv);
+
+    // Revela a linha sem mover as outras
+    setTimeout(() => {
+      lineDiv.style.opacity = "1";
+    }, index * 2000);
+  });
+}
+  
+document.addEventListener("keydown", () => {
+
+  enterSound.play().catch(()=>{});
+
+  showScreen("loading");
+
+  let loadingText = document.createElement("div");
+  loadingText.className = "loadingDots";
+  loadingText.style.position = "absolute";
+  loadingText.style.fontSize = "48px";
+  loadingText.style.top = "70%";
+  loadingText.style.left = "50%";
+  loadingText.style.transform = "translateX(-50%)";
+  loadingText.innerText = "";
+  document.body.appendChild(loadingText);
+
+  setTimeout(() => {
+    showScreen("connecting");
+
+    setTimeout(() => {
+      loadingText.remove();
+      showScreen("terminal");
+      document.getElementById("inputBox").classList.remove("hidden");
+    }, 6000);
+
+  }, 6000);
+
+}, { once: true });
+
+document.getElementById("codeInput").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+
+    let value = this.value.toLowerCase().trim();
+
+isAlberto = ["alberto", "alberto luci"].includes(value);
+    this.value = "";
+
+showScreen("pre");
+document.getElementById("inputBox").classList.add("hidden");
+
+let preLoading = document.createElement("div");
+preLoading.className = "loadingDots";
+preLoading.style.fontSize = "48px";
+preLoading.style.position = "absolute";
+preLoading.style.top = "70%";
+preLoading.style.left = "50%";
+preLoading.style.transform = "translateX(-50%)";
+document.body.appendChild(preLoading);
+
+setTimeout(() => {
+  preLoading.remove();
+  showScreen("result");
+
+let text = document.createElement("div");
+text.style.position = "absolute";
+text.style.top = "50%";
+text.style.left = "50%";
+text.style.transform = "translate(-50%, -50%)";
+text.style.textAlign = "center";
+text.style.fontSize = "20px";
+text.style.width = "80%"; // Garante que ocupe a largura total
+text.style.minHeight = "150px"; // Reserva o espaço para as 4 linhas antes de aparecerem
+
+ if (value === "homens bem-vestidos") {
+
+  showScreen("pre");
+
+  setTimeout(() => {
+    showScreen("hbv1");
+
+    setTimeout(() => showScreen("hbv2"), 2400);
+    setTimeout(() => showScreen("hbv3"), 5800);
+    setTimeout(() => showScreen("hbv4"), 9000);
+
+    setTimeout(() => {
+      showScreen("final");
+
+      setTimeout(() => {
+        showScreen("terminal");
+        document.getElementById("inputBox").classList.remove("hidden");
+      }, 4000);
+
+    }, 15000);
+
+  }, 4000);
+
+  return;
+}
+  
+      if (["yan","yan massoni","magmapocket","magmapocket!"].includes(value)) {
+
+  let img = document.createElement("img");
+  img.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBwW8rOgL_Ahf6ZQfWAECajo4sVMug9MI5B7qyvjP1k_rBAU3tkACNx-D9KIze_dZQEH892Chf88qP-_zMJfSi2U-t-7ej5bAc6mAgcOJmwrEvnOIFGD_d4Z6-n8Bjpe2cu7mR5M9n6mU/s1600/mussoumano_transparente006.png";
+
+  img.style.position = "absolute";
+  img.style.top = "50%";
+  img.style.left = "50%";
+  img.style.transform = "translate(-50%, -50%)";
+  img.style.maxWidth = "300px";
+
+  document.body.appendChild(img);
+
+  setTimeout(() => {
+    img.remove();
+    showScreen("final");
+
+    setTimeout(() => {
+      showScreen("terminal");
+      document.getElementById("inputBox").classList.remove("hidden");
+    }, 4000);
+
+  }, 4000);
+
+  return;
+}
+
+if (codes[value]) {
+
+enterSound.currentTime = 0;
+enterSound.play().catch(()=>{});
+
+  document.body.appendChild(text);
+
+if (isAlberto) {
+  errorSound.currentTime = 0;
+  errorSound.play().catch(()=>{});
+}
+  showLinesSequentially(text, codes[value]);
+
+} else {
+
+  showScreen("notfound");
+
+  setTimeout(() => {
+    showScreen("final");
+
+    setTimeout(() => {
+      showScreen("terminal");
+      document.getElementById("inputBox").classList.remove("hidden");
+    }, 4000);
+
+  }, 4000);
+
+  return;
+}
+      
+
+      setTimeout(() => {
+        text.style.transition = "opacity 1s";
+        text.style.opacity = "0";
+      }, 7000);
+
+      setTimeout(() => {
+        text.remove();
+        showScreen("final");
+
+        setTimeout(() => {
+          showScreen("terminal");
+          document.getElementById("inputBox").classList.remove("hidden");
+        }, 4000);
+
+      }, 8000);
+
+    }, 4000);
+  }
+});
+</script>
+
+</body>
+</html>
